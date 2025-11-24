@@ -55,7 +55,7 @@ spring:
             - Path=/api/v1/reports/**
 
         - id: support
-          uri: http://localhost:8080
+          uri: http://localhost:8087
           predicates:
             - Path=/api/v1/support/**
 
