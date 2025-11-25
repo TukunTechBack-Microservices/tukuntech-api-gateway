@@ -29,6 +29,32 @@ spring:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_FIRST
 
       routes:
+        # ========= RUTAS DE OPENAPI (DOCS) =========
+        # Cada microservicio expone /api/v1/v3/api-docs en su raíz.
+
+        - id: auth-openapi
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/auth/v3/api-docs/**
+          filters:
+            - RewritePath=/api/v1/auth/v3/api-docs(?<segment>/?.*), /api/v1/v3/api-docs${segment}
+
+        - id: profiles-openapi
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/v1/profiles/v3/api-docs/**
+          filters:
+            - RewritePath=/api/v1/profiles/v3/api-docs(?<segment>/?.*), /api/v1/v3/api-docs${segment}
+
+        - id: support-openapi
+          uri: http://localhost:8087
+          predicates:
+            - Path=/api/v1/support/v3/api-docs/**
+          filters:
+            - RewritePath=/api/v1/support/v3/api-docs(?<segment>/?.*), /api/v1/v3/api-docs${segment}
+
+        # ========= RUTAS DE NEGOCIO =========
+
         - id: auth
           uri: http://localhost:8082
           predicates:
@@ -39,50 +65,27 @@ spring:
           predicates:
             - Path=/api/v1/profiles/**
 
-        - id: monitoring
-          uri: http://localhost:8080
-          predicates:
-            - Path=/api/v1/monitoring/**
-
-        - id: care
-          uri: http://localhost:8080
-          predicates:
-            - Path=/api/v1/care/**
-
-        - id: reports
-          uri: http://localhost:8080
-          predicates:
-            - Path=/api/v1/reports/**
-
         - id: support
           uri: http://localhost:8087
           predicates:
             - Path=/api/v1/support/**
 
-        - id: swagger-docs
-          uri: http://localhost:8080
-          predicates:
-            - Path=/api/v1/v3/api-docs/**
-
-        - id: swagger-ui
-          uri: http://localhost:8080
-          predicates:
-            - Path=/api/v1/swagger-ui/**,/api/v1/swagger-ui.html
-
-        - id: actuator-v1
-          uri: http://localhost:8080
-          predicates:
-            - Path=/api/v1/actuator/**
-
-        - id: actuator-root
-          uri: http://localhost:8080
-          predicates:
-            - Path=/actuator/**
-
-        - id: monolith-fallback
-          uri: http://localhost:8080
-          predicates:
-            - Path=/api/v1/**
 
 server:
   port: 8081
+
+# ========= CONFIG DE SPRINGDOC EN EL GATEWAY =========
+# Dejamos que springdoc sirva el UI directamente en /api/v1/swagger-ui.html
+
+springdoc:
+  api-docs:
+    enabled: true          # <- lo dejo tal como lo tenías
+  swagger-ui:
+    path: /api/v1/swagger-ui.html
+    urls:
+      - name: auth-service
+        url: /api/v1/auth/v3/api-docs
+      - name: profiles-service
+        url: /api/v1/profiles/v3/api-docs
+      - name: support-service
+        url: /api/v1/support/v3/api-docs
