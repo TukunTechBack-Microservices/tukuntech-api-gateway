@@ -30,8 +30,6 @@ spring:
 
       routes:
         # ========= RUTAS DE OPENAPI (DOCS) =========
-        # Cada microservicio expone /api/v1/v3/api-docs en su raíz.
-
         - id: auth-openapi
           uri: http://localhost:8082
           predicates:
@@ -53,8 +51,28 @@ spring:
           filters:
             - RewritePath=/api/v1/support/v3/api-docs(?<segment>/?.*), /api/v1/v3/api-docs${segment}
 
-        # ========= RUTAS DE NEGOCIO =========
+        - id: reports-openapi
+          uri: http://localhost:8086
+          predicates:
+            - Path=/api/v1/reports/v3/api-docs/**
+          filters:
+            - RewritePath=/api/v1/reports/v3/api-docs(?<segment>/?.*), /api/v1/v3/api-docs${segment}
 
+        - id: monitoring-openapi
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/v1/monitoring/v3/api-docs/**
+          filters:
+            - RewritePath=/api/v1/monitoring/v3/api-docs(?<segment>/?.*), /api/v1/v3/api-docs${segment}
+
+        - id: care-openapi
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/v1/care/v3/api-docs/**
+          filters:
+            - RewritePath=/api/v1/care/v3/api-docs(?<segment>/?.*), /api/v1/v3/api-docs${segment}
+
+        # ========= RUTAS DE NEGOCIO =========
         - id: auth
           uri: http://localhost:8082
           predicates:
@@ -70,16 +88,27 @@ spring:
           predicates:
             - Path=/api/v1/support/**
 
+        - id: reports
+          uri: http://localhost:8086
+          predicates:
+            - Path=/api/v1/reports/**
+
+        - id: monitoring
+          uri: http://localhost:8084
+          predicates:
+            - Path=/api/v1/monitoring/**
+
+        - id: care
+          uri: http://localhost:8085
+          predicates:
+            - Path=/api/v1/care/**
 
 server:
   port: 8081
 
-# ========= CONFIG DE SPRINGDOC EN EL GATEWAY =========
-# Dejamos que springdoc sirva el UI directamente en /api/v1/swagger-ui.html
-
 springdoc:
   api-docs:
-    enabled: true          # <- lo dejo tal como lo tenías
+    enabled: true
   swagger-ui:
     path: /api/v1/swagger-ui.html
     urls:
@@ -89,3 +118,16 @@ springdoc:
         url: /api/v1/profiles/v3/api-docs
       - name: support-service
         url: /api/v1/support/v3/api-docs
+      - name: reports-service
+        url: /api/v1/reports/v3/api-docs
+      - name: monitoring-service
+        url: /api/v1/monitoring/v3/api-docs
+      - name: care-service
+        url: /api/v1/care/v3/api-docs
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
