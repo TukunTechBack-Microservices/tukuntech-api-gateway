@@ -35,7 +35,6 @@
             <version>4.3.0</version>
         </dependency>
 
-
         <!-- Actuator -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

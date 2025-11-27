@@ -31,42 +31,42 @@ spring:
       routes:
         # ========= RUTAS DE OPENAPI (DOCS) =========
         - id: auth-openapi
-          uri: http://localhost:8082
+          uri: lb://TUKUNTECH-MS-IAM
           predicates:
             - Path=/api/v1/auth/v3/api-docs/**
           filters:
             - RewritePath=/api/v1/auth/v3/api-docs(?<segment>/?.*), /api/v1/v3/api-docs${segment}
 
         - id: profiles-openapi
-          uri: http://localhost:8083
+          uri: lb://TUKUNTECH-MS-PROFILES
           predicates:
             - Path=/api/v1/profiles/v3/api-docs/**
           filters:
             - RewritePath=/api/v1/profiles/v3/api-docs(?<segment>/?.*), /api/v1/v3/api-docs${segment}
 
         - id: support-openapi
-          uri: http://localhost:8087
+          uri: lb://TUKUNTECH-MS-SUPPORT
           predicates:
             - Path=/api/v1/support/v3/api-docs/**
           filters:
             - RewritePath=/api/v1/support/v3/api-docs(?<segment>/?.*), /api/v1/v3/api-docs${segment}
 
         - id: reports-openapi
-          uri: http://localhost:8086
+          uri: lb://TUKUNTECH-MS-REPORT
           predicates:
             - Path=/api/v1/reports/v3/api-docs/**
           filters:
             - RewritePath=/api/v1/reports/v3/api-docs(?<segment>/?.*), /api/v1/v3/api-docs${segment}
 
         - id: monitoring-openapi
-          uri: http://localhost:8084
+          uri: lb://TUKUNTECH-MS-MONITORING
           predicates:
             - Path=/api/v1/monitoring/v3/api-docs/**
           filters:
             - RewritePath=/api/v1/monitoring/v3/api-docs(?<segment>/?.*), /api/v1/v3/api-docs${segment}
 
         - id: care-openapi
-          uri: http://localhost:8085
+          uri: lb://TUKUNTECH-MS-CARE
           predicates:
             - Path=/api/v1/care/v3/api-docs/**
           filters:
@@ -74,32 +74,32 @@ spring:
 
         # ========= RUTAS DE NEGOCIO =========
         - id: auth
-          uri: http://localhost:8082
+          uri: lb://TUKUNTECH-MS-IAM
           predicates:
             - Path=/api/v1/auth/**
 
         - id: profiles
-          uri: http://localhost:8083
+          uri: lb://TUKUNTECH-MS-PROFILES
           predicates:
             - Path=/api/v1/profiles/**
 
         - id: support
-          uri: http://localhost:8087
+          uri: lb://TUKUNTECH-MS-SUPPORT
           predicates:
             - Path=/api/v1/support/**
 
         - id: reports
-          uri: http://localhost:8086
+          uri: lb://TUKUNTECH-MS-REPORT
           predicates:
             - Path=/api/v1/reports/**
 
         - id: monitoring
-          uri: http://localhost:8084
+          uri: lb://TUKUNTECH-MS-MONITORING
           predicates:
             - Path=/api/v1/monitoring/**
 
         - id: care
-          uri: http://localhost:8085
+          uri: lb://TUKUNTECH-MS-CARE
           predicates:
             - Path=/api/v1/care/**
 
