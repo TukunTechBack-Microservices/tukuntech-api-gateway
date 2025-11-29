@@ -77,31 +77,61 @@ spring:
           uri: lb://TUKUNTECH-MS-IAM
           predicates:
             - Path=/api/v1/auth/**
+      #    filters:
+      #      - name: CircuitBreaker
+      #        args:
+      #          name: authCircuitBreaker
+      #          fallbackUri: forward:/fallback/auth
 
         - id: profiles
           uri: lb://TUKUNTECH-MS-PROFILES
           predicates:
             - Path=/api/v1/profiles/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: profilesCircuitBreaker
+                fallbackUri: forward:/fallback/profiles
 
         - id: support
           uri: lb://TUKUNTECH-MS-SUPPORT
           predicates:
             - Path=/api/v1/support/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: supportCircuitBreaker
+                fallbackUri: forward:/fallback/support
 
         - id: reports
           uri: lb://TUKUNTECH-MS-REPORT
           predicates:
             - Path=/api/v1/reports/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: reportsCircuitBreaker
+                fallbackUri: forward:/fallback/reports
 
         - id: monitoring
           uri: lb://TUKUNTECH-MS-MONITORING
           predicates:
             - Path=/api/v1/monitoring/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: monitoringCircuitBreaker
+                fallbackUri: forward:/fallback/monitoring
 
         - id: care
           uri: lb://TUKUNTECH-MS-CARE
           predicates:
             - Path=/api/v1/care/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: careCircuitBreaker
+                fallbackUri: forward:/fallback/care
 
 server:
   port: 8081
@@ -131,3 +161,32 @@ eureka:
     fetch-registry: true
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+# ===================== RESILIENCE4J =====================
+resilience4j:
+  circuitbreaker:
+    instances:
+      authCircuitBreaker:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+      profilesCircuitBreaker:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+      supportCircuitBreaker:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+      reportsCircuitBreaker:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+      monitoringCircuitBreaker:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+      careCircuitBreaker:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
