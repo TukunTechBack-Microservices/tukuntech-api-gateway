@@ -2,10 +2,12 @@ spring:
   application:
     name: tukuntech-api-gateway
 
+  config:
+    import: optional:configserver:http://localhost:8888
+
   cloud:
     compatibility-verifier:
       enabled: false
-
     gateway:
       globalcors:
         add-to-simple-url-handler-mapping: true
@@ -77,11 +79,11 @@ spring:
           uri: lb://TUKUNTECH-MS-IAM
           predicates:
             - Path=/api/v1/auth/**
-      #    filters:
-      #      - name: CircuitBreaker
-      #        args:
-      #          name: authCircuitBreaker
-      #          fallbackUri: forward:/fallback/auth
+        #    filters:
+        #      - name: CircuitBreaker
+        #        args:
+        #          name: authCircuitBreaker
+        #          fallbackUri: forward:/fallback/auth
 
         - id: profiles
           uri: lb://TUKUNTECH-MS-PROFILES
